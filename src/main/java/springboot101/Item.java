@@ -2,15 +2,12 @@ package springboot101;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-/**
- * Created by stephen on 3/3/15.
- */
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Item {
 
     private String title;
     private String url;
-    private int score;
 
     public int getScore() {
         return score;
@@ -20,6 +17,9 @@ public class Item {
         this.score = score;
     }
 
+    private int score;
+    
+    
     public String getTitle() {
         return title;
     }
