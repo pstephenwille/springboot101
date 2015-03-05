@@ -2,18 +2,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import springboot101.HackerNewsService;
+import springboot101.Item;
 import springboot101.TopStoriesController;
 
-import static org.hamcrest.Matchers.equalTo;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import java.util.Arrays;
+import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -21,26 +21,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class TopStoriesControllerTest {
 
-    private MockMvc mvc;
+
+    private TopStoriesController controller;
 
     @Before
     public void setUp() throws Exception {
-        mvc = MockMvcBuilders.standaloneSetup(new TopStoriesController()).build();
-
+        HackerNewsService service = mock(HackerNewsService.class);
+        when(service.getSortedStories()).thenReturn(Arrays.asList(new Item()));
+        controller = new TopStoriesController();
     }
 
-    @Test
-    public void getIndex() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("hacker news's top stories")));
-    }
 
     @Test
-    public void getSortedItems() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/toprated").accept(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType("application/json;charset=UTF-8"))
-                .andReturn();
+    public void testSortedItems2() throws Exception {
     }
 }

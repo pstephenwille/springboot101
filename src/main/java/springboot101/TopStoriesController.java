@@ -15,10 +15,13 @@ import java.util.List;
 @RestController
 public class TopStoriesController {
 
-
     @Autowired
     HackerNewsService hackerNewsService;
 
+//    @Autowired
+//    public TopStoriesController(HackerNewsService hackerNewsService) {
+//        hackerNewsService = hackerNewsService;
+//    }
 
     /* root */
     @RequestMapping("/")
@@ -36,6 +39,7 @@ public class TopStoriesController {
     public List<Item> getSortedItems() {
         return hackerNewsService.getSortedStories();
     }
+
 }
 
 

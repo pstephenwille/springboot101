@@ -26,14 +26,14 @@ public class HackerNewsService {
                 .getBody();
 
 //         topItems = items; /* all 500 items */
-        topItems = items.subList(0, 50);
+//        topItems = items.subList(0, 50);
 
-        return topItems;
+        return items.subList(0, 50);
     }
 
 
     @Async
-    public Future<Item> getItem(Object id) throws InterruptedException {
+    public Future<Item> getFutureItem(Object id) throws InterruptedException {
         Item result = restTemplate.getForObject(
                 "https://hacker-news.firebaseio.com/v0/item/" + id.toString() + ".json",
                 Item.class);
@@ -43,12 +43,19 @@ public class HackerNewsService {
 
 
     public List<Item> getSortedStories() {
-        System.out.println("real getSortedStories");
+        /* nulled out to prevent appending items. */
+        topItemsData = new ArrayList<>();
+        futureList = new ArrayList();
+        sortedItems = new ArrayList();
+        
+        topItems = getTopStories();
+        
+        System.out.println("real getSortedStories"+ topItems.size());
         /* get each item */
         topItems.forEach((Object id) -> {
             try {
 
-                futureList.add(getItem(id));
+                futureList.add(getFutureItem(id));
 
             } catch (InterruptedException e) {
                 System.out.println("interrupted " + e);
@@ -75,8 +82,9 @@ public class HackerNewsService {
                 .forEach(item -> sortedItems.add(item));
 
 
-        sortedItems.forEach(item -> System.out.println("sorted " + item.getScore()));
-
+        System.out.printf("END get sorted stories.... "+ topItemsData.size());
+        
+        
         return sortedItems;
     }
 }
