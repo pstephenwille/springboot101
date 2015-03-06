@@ -1,38 +1,48 @@
-import org.junit.Before;
+import mockit.Expectations;
+import mockit.Mocked;
+import mockit.integration.junit4.JMockit;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import springboot101.HackerNewsService;
-import springboot101.Item;
 import springboot101.TopStoriesController;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = MockServletContext.class)
-@WebAppConfiguration
+@RunWith(JMockit.class)
 public class TopStoriesControllerTest {
 
 
-    private TopStoriesController controller;
+//    private TopStoriesController controller;
 
-    @Before
-    public void setUp() throws Exception {
-        HackerNewsService service = mock(HackerNewsService.class);
-        when(service.getSortedStories()).thenReturn(Arrays.asList(new Item()));
-        controller = new TopStoriesController();
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        HackerNewsService service = mock(HackerNewsService.class);
+//        when(service.getSortedStories()).thenReturn(Arrays.asList(new Item()));
+//        controller = new TopStoriesController();
+//    }
+
+    @Mocked(stubOutClassInitialization = true)
+    TopStoriesController ctlr;
+
+    @Mocked
+    HackerNewsService srvc;
 
 
     @Test
-    public void testSortedItems2() throws Exception {
+    public void getSortedItems() {
+
+        new Expectations() {{
+            ctlr.getSortedItems();
+            result = "";
+            srvc.getSortedStories();
+            result = new ArrayList<>();
+
+        }};
+
+        ctlr.getSortedItems();
+        srvc.getSortedStories();
+
     }
+
+
 }

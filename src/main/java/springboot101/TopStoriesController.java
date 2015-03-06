@@ -37,6 +37,7 @@ public class TopStoriesController {
             produces = "application/json")
     @ResponseBody
     public List<Item> getSortedItems() {
+        System.out.println("get sorted - real");
         return hackerNewsService.getSortedStories();
     }
 
