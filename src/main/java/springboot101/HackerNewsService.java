@@ -28,7 +28,7 @@ public class HackerNewsService {
 //         topItems = items; /* all 500 items */
 //        topItems = items.subList(0, 50);
 
-        return items.subList(0, 50);
+        return items.subList(0, 250);
     }
 
 

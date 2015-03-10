@@ -19,9 +19,12 @@ public class TopStoriesControllerTest {
 //        HackerNewsService service = mock(HackerNewsService.class);
 //        when(service.getSortedStories()).thenReturn(Arrays.asList(new Item()));
 //        controller = new TopStoriesController();
+
+
 //    }
 
-    @Mocked(stubOutClassInitialization = true)
+
+
     TopStoriesController ctlr;
 
     @Mocked
@@ -33,7 +36,7 @@ public class TopStoriesControllerTest {
 
         new Expectations() {{
             ctlr.getSortedItems();
-            result = "";
+            result = new ArrayList<>();
             srvc.getSortedStories();
             result = new ArrayList<>();
 
