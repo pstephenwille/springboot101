@@ -1,8 +1,11 @@
 package springboot101;
 
+import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.web.client.AsyncRestTemplate;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -18,7 +21,7 @@ public class HackerNewsService {
     List<Item> sortedItems = new ArrayList();
 
     RestTemplate restTemplate = new RestTemplate();
-
+    AsyncRestTemplate asyncTemplate = new AsyncRestTemplate();
 
     public List<Item> getTopStories() {
         ArrayList items = restTemplate
@@ -28,15 +31,25 @@ public class HackerNewsService {
 //         topItems = items; /* all 500 items */
 //        topItems = items.subList(0, 50);
 
-        return items.subList(0, 250);
+        return items.subList(0, 25);
     }
 
 
     @Async
     public Future<Item> getFutureItem(Object id) throws InterruptedException {
-        Item result = restTemplate.getForObject(
-                "https://hacker-news.firebaseio.com/v0/item/" + id.toString() + ".json",
-                Item.class);
+//        Item result = restTemplate.getForObject(
+//                "https://hacker-news.firebaseio.com/v0/item/" + id.toString() + ".json",
+//                Item.class);
+        String url = "https://hacker-news.firebaseio.com/v0/item/" + id.toString() + ".json";
+        HttpMethod method = HttpMethod.GET;
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.TEXT_PLAIN);
+
+        HttpEntity<String> reqEntity = new HttpEntity<String>("params", headers);
+        ListenableFuture<ResponseEntity<String>> future = asyncTemplate
+                .exchange(url, method, reqEntity, Item);
+
+
 
         return new AsyncResult<Item>(result);
     }
