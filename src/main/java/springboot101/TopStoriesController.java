@@ -9,36 +9,38 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by stephen on 3/3/15.
- */
+
 @RestController
 public class TopStoriesController {
 
     @Autowired
-    HackerNewsService hackerNewsService;
+    HackerNewsService hn_service;
 
-//    @Autowired
-//    public TopStoriesController(HackerNewsService hackerNewsService) {
-//        hackerNewsService = hackerNewsService;
-//    }
 
     /* root */
     @RequestMapping("/")
     public String index() {
+
         return "hacker news's top stories";
     }
 
 
-    /* topstories */
+    /* /top-rated*/
     @RequestMapping(
-            value = "/toprated",
+            value = "/top-rated",
             method = RequestMethod.GET,
             produces = "application/json")
     @ResponseBody
     public List<Item> getSortedItems() {
-        System.out.println("get sorted - real");
-        return hackerNewsService.getSortedStories();
+
+        if (hn_service.sortedItems.size() < 1) {
+
+            return hn_service.getSortedStories();
+        } else {
+
+            return hn_service.sortedItems;
+        }
+
     }
 
 }
